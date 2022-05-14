@@ -3,28 +3,29 @@ name: build with cargo in a container
 on: workflow_dispatch
 
 jobs:
-  from-repo:
+  armv7:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - run: |
+          sudo apt update
+          sudo apt install -y qemu-user-static
       - uses: redhat-actions/buildah-build@v2
         with:
+          platforms: linux/arm
           containerfiles: |
             ./Dockerfile
           image: cargo-in-a-container
-
-  from-job-file
+  arm64:
     runs-on: ubuntu-latest
     steps:
-      - uses: DamianReeves/write-file-action@v1.0
-        with:
-          path: ./Dockerfile
-          contents: |
-            FROM docker.io/python:3.9-alpine
-            RUN apk add --no-cache build-base cargo ca-certificates libffi-dev musl-dev openssl-dev python3-dev \
-             && pip install cryptography
+      - uses: actions/checkout@v3
+      - run: |
+          sudo apt update
+          sudo apt install -y qemu-user-static
       - uses: redhat-actions/buildah-build@v2
         with:
+          platforms: linux/arm64
           containerfiles: |
             ./Dockerfile
           image: cargo-in-a-container
