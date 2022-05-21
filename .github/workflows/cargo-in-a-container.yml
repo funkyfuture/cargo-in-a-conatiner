@@ -19,3 +19,4 @@ jobs:
           platforms: linux/arm
           containerfiles: |
             ./Dockerfile
+          image: test
