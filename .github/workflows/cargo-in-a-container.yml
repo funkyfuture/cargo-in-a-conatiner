@@ -3,9 +3,13 @@ name: build with cargo in a container
 on: workflow_dispatch
 
 jobs:
-  armv7:
+  test-the-workaround:
     runs-on: ubuntu-latest
     steps:
+      - uses: JonasAlfredsson/docker-on-tmpfs@v1
+        with:
+          tmpfs_size: 5
+          swap_size: 4
       - uses: actions/checkout@v3
       - run: |
           sudo apt update
@@ -15,17 +19,3 @@ jobs:
           platforms: linux/arm
           containerfiles: |
             ./Dockerfile
-          image: cargo-in-a-container
-  arm64:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: |
-          sudo apt update
-          sudo apt install -y qemu-user-static
-      - uses: redhat-actions/buildah-build@v2
-        with:
-          platforms: linux/arm64
-          containerfiles: |
-            ./Dockerfile
-          image: cargo-in-a-container
