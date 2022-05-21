@@ -8,8 +8,8 @@ jobs:
     steps:
       - uses: JonasAlfredsson/docker-on-tmpfs@v1
         with:
-          tmpfs_size: 3
-          swap_size: 6
+          tmpfs_size: 6
+          swap_size: 8
       - uses: actions/checkout@v3
       - run: |
           sudo apt update
